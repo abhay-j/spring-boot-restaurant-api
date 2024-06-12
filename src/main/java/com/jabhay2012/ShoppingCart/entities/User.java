@@ -1,5 +1,7 @@
 package com.jabhay2012.ShoppingCart.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,6 +27,7 @@ public class User {
     private String email;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonIgnoreProperties("user") 
     private ShoppingCart shoppingCart;
 
    

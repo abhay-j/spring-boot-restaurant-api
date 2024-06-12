@@ -4,6 +4,7 @@ package com.jabhay2012.ShoppingCart.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -25,8 +26,8 @@ public class Category {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL ,orphanRemoval = true)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "category")
+    @JsonIgnoreProperties("category")  // Ignore the 'category' property in Product
     private List<Product> products ;
     
 

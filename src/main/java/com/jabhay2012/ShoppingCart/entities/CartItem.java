@@ -1,5 +1,7 @@
 package com.jabhay2012.ShoppingCart.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,6 +23,7 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "shopping_cart_id")
+    @JsonIgnoreProperties("items")
     private ShoppingCart shoppingCart;
     
     @Column(name = "quantity", nullable = false)

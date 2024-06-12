@@ -2,6 +2,8 @@ package com.jabhay2012.ShoppingCart.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,9 +23,11 @@ public class ShoppingCart {
 
     @OneToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties("shoppingCart")
     private User user;
 
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("shoppingCart")
     private List<CartItem> items;
     
     public ShoppingCart(){}
