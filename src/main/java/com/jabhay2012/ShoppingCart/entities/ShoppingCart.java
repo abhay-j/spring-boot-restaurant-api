@@ -24,14 +24,16 @@ public class ShoppingCart {
     @OneToOne
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties("shoppingCart")
-    private User user;
+    private UserEntity user;
 
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("shoppingCart")
     private List<CartItem> items;
-    
-    public ShoppingCart(){}
-    public ShoppingCart(User user, List<CartItem> items) {
+
+    public ShoppingCart() {
+    }
+
+    public ShoppingCart(UserEntity user, List<CartItem> items) {
         this.user = user;
         this.items = items;
     }
@@ -44,11 +46,11 @@ public class ShoppingCart {
         this.id = id;
     }
 
-    public User getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 
@@ -64,7 +66,5 @@ public class ShoppingCart {
     public String toString() {
         return "ShoppingCart [id=" + id + ", user=" + user + ", items=" + items + "]";
     }
-    
-    
 
 }

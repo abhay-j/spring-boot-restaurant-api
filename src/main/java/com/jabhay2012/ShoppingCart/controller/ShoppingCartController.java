@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jabhay2012.ShoppingCart.entities.CartItem;
 import com.jabhay2012.ShoppingCart.entities.ShoppingCart;
-import com.jabhay2012.ShoppingCart.entities.User;
+import com.jabhay2012.ShoppingCart.entities.UserEntity;
 import com.jabhay2012.ShoppingCart.services.ShoppingCartService;
 import com.jabhay2012.ShoppingCart.services.UserService;
 
@@ -36,8 +36,8 @@ public class ShoppingCartController {
     }
 
     @PostMapping
-    public ResponseEntity<ShoppingCart> createCartForUser(@RequestBody User user) {
-        User existingUser = userService.findById(user.getId());
+    public ResponseEntity<ShoppingCart> createCartForUser(@RequestBody UserEntity user) {
+        UserEntity existingUser = userService.findById(user.getId());
         if (existingUser == null) {
             return ResponseEntity.notFound().build();
         }
