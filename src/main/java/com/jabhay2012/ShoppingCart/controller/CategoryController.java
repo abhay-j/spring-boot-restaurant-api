@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ public class CategoryController {
         return categoryService.findAll();
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
         Category category = categoryService.findById(id);
@@ -35,12 +37,13 @@ public class CategoryController {
         }
         return ResponseEntity.ok(category);
     }
-
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping
     public Category createCategory(@RequestBody Category category) {
         return categoryService.save(category);
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category categoryDetails) {
         Category category = categoryService.findById(id);
@@ -53,7 +56,7 @@ public class CategoryController {
         Category updatedCategory = categoryService.save(category);
         return ResponseEntity.ok(updatedCategory);
     }
-
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         Category category = categoryService.findById(id);

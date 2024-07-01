@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,9 +18,11 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
     @Autowired
     private CustomUserDetailsService userDetailsService;
@@ -31,46 +34,28 @@ public class SecurityConfig {
         this.authEntryPoint = authEntryPoint;
     }
 
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeHttpRequests((requests) -> requests.requestMatchers("/api/auth/**").permitAll()
-//                        .anyRequest().authenticated())
-//                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//        // .formLogin(Customizer.withDefaults())
-//        // .csrf(csrf -> csrf.disable());
-//        http.httpBasic(Customizer.withDefaults());
-//        http.csrf(csrf -> csrf.disable());
-//
-//        return http.build();
-//    }
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/api/auth/**").permitAll()  // Allow all methods (GET, POST, etc.) to /api/auth/**
-                        .anyRequest().authenticated()  // Require authentication for all other requests
+                .csrf(csrf -> csrf.disable())
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(authEntryPoint)
                 )
-                .sessionManagement(sess -> sess
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Use stateless session management
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .httpBasic(Customizer.withDefaults())  // Enable HTTP Basic authentication
-                .csrf(csrf -> csrf.disable());  // Disable CSRF protection (necessary for stateless APIs)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**","/api/products").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .httpBasic(Customizer.withDefaults());
+
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-//
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//
-//        UserDetails user1 = User.withUsername("user1").password(passwordEncoder().encode("password1")).roles("USER")
-//                .build();
-//        UserDetails admin1 = User.withUsername("admin1").password(passwordEncoder().encode("adminPass")).roles("ADMIN")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(user1, admin1);
-//
-//    }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
@@ -81,6 +66,11 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public JWTAuthenticationFilter jwtAuthenticationFilter(){
+        return  new JWTAuthenticationFilter();
     }
 
 }

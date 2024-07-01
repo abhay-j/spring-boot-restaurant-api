@@ -24,7 +24,9 @@ public class Product {
 
     @Column(name = "description", nullable = false)
     private String description;
-    
+
+    @Column(name = "image_url", nullable = false)
+    private String url;
     @Column(name = "price", nullable = false)
     private double price;
 
@@ -33,9 +35,10 @@ public class Product {
     @JsonIgnoreProperties("products")  // Ignore the 'products' property in Category
     private Category category;
     public Product(){}
-    public Product(String title, String description, double price, Category category) {
+    public Product(String title, String description, double price, Category category, String url) {
         this.title = title;
         this.description = description;
+        this.url = url;
         this.price = price;
         this.category = category;
     }
@@ -64,6 +67,14 @@ public class Product {
         this.description = description;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public double getPrice() {
         return price;
     }
@@ -82,10 +93,13 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product [id=" + id + ", title=" + title + ", description=" + description + ", price=" + price
-                + ", category=" + category + "]";
+        return "Product{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", url='" + url + '\'' +
+                ", price=" + price +
+                ", category=" + category +
+                '}';
     }
-    
-    
-
 }

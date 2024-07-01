@@ -2,7 +2,10 @@ package com.jabhay2012.ShoppingCart.controller;
 
 import java.util.Collections;
 
+import com.jabhay2012.ShoppingCart.dto.AuthResponseDto;
 import com.jabhay2012.ShoppingCart.dto.LoginDto;
+import com.jabhay2012.ShoppingCart.dto.LoginResponseDto;
+import com.jabhay2012.ShoppingCart.security.JWTGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.http.HttpStatus;
@@ -31,14 +34,17 @@ public class AuthController {
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    JWTGenerator jwtGenerator;
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository,
-            RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+            RoleRepository roleRepository, PasswordEncoder passwordEncoder, JWTGenerator jwtGenerator) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtGenerator = jwtGenerator;
         System.out.println("123");
     }
 
@@ -49,18 +55,25 @@ public class AuthController {
     public String greet(){
         return "hello";
     }
-
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
+    public ResponseEntity<?> login(@RequestBody LoginDto loginDto){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
 
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User signed in", HttpStatus.OK);
+        String token = jwtGenerator.generateToken(authentication);
+        // Fetch user details
+        UserEntity user = userRepository.findByUsername(loginDto.getUsername())
+                .orElseThrow(()-> new RuntimeException("User not found"));
+        LoginResponseDto responseDto = new LoginResponseDto(token, "Bearer",user.getId(), user.getUsername(), user.getEmail());
+
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
 
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
         System.out.println("456");
