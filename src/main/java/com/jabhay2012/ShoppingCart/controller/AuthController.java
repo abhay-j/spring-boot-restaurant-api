@@ -2,9 +2,7 @@ package com.jabhay2012.ShoppingCart.controller;
 
 import java.util.Collections;
 
-import com.jabhay2012.ShoppingCart.dto.AuthResponseDto;
-import com.jabhay2012.ShoppingCart.dto.LoginDto;
-import com.jabhay2012.ShoppingCart.dto.LoginResponseDto;
+import com.jabhay2012.ShoppingCart.dto.*;
 import com.jabhay2012.ShoppingCart.security.JWTGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
@@ -17,7 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import com.jabhay2012.ShoppingCart.dto.RegisterDto;
 import com.jabhay2012.ShoppingCart.entities.Role;
 import com.jabhay2012.ShoppingCart.entities.UserEntity;
 import com.jabhay2012.ShoppingCart.repos.RoleRepository;
@@ -75,13 +72,13 @@ public class AuthController {
 
     @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
-        System.out.println("456");
+    public ResponseEntity<?> register(@RequestBody RegisterDto registerDto) {
+
         if (userRepository.existsByUsername(registerDto.getUsername())) {
-            System.out.println("print inside if");
+
             return new ResponseEntity<>("User name already taken", HttpStatus.BAD_REQUEST);
         }
-        System.out.println("print outside");
+
 
         UserEntity user = new UserEntity();
         user.setUsername(registerDto.getUsername());
@@ -92,9 +89,10 @@ public class AuthController {
 
         user.setRoles(Collections.singletonList(roles));
 
-        userRepository.save(user);
+        UserEntity savedUser = userRepository.save(user);
 
-        return new ResponseEntity<>("User Registered", HttpStatus.OK);
+        RegisterResponseDto registerResponseDto = new RegisterResponseDto(savedUser.getId(), savedUser.getUsername(), savedUser.getEmail());
+        return new ResponseEntity<>(registerResponseDto, HttpStatus.OK);
     }
 
 }
