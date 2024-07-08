@@ -16,7 +16,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
     @GetMapping
     public List<Product> getAllProducts() {
         return productService.findAll();
