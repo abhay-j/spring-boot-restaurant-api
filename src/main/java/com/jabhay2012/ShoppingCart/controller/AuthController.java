@@ -52,7 +52,7 @@ public class AuthController {
     public String greet(){
         return "hello";
     }
-    @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto){
         Authentication authentication = authenticationManager.authenticate(
