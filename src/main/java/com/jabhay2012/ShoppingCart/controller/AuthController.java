@@ -70,7 +70,8 @@ public class AuthController {
     }
 
 
-    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
+//    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDto registerDto) {
 
