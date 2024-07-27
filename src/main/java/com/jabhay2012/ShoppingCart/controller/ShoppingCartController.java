@@ -83,6 +83,23 @@ public class ShoppingCartController {
         shoppingCartService.removeItemFromCart(cartId, itemId);
         return ResponseEntity.noContent().build();
     }
+
+    @CrossOrigin(origins = "http://localhost:5173")
+    @PutMapping("/{cartId}/items/{itemId}")
+    public ResponseEntity<CartItem> updateItemQuantity(@PathVariable Long cartId,
+                                                       @PathVariable Long itemId,
+                                                       @RequestBody CartItem cartItem) {
+        try {
+            CartItem updatedItem = shoppingCartService.updateItemQuantity(cartId, itemId, cartItem.getQuantity());
+            if (updatedItem == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(updatedItem);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 //    @DeleteMapping("/items/{itemId}")
 //    public ResponseEntity<Void> removeItemFromCart(@PathVariable Long itemId) {
 //        shoppingCartService.removeItemFromCart(itemId);

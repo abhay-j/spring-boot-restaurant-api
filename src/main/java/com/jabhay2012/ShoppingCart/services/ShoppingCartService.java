@@ -31,7 +31,20 @@ public class ShoppingCartService {
         return cartItemRepository.save(cartItem);
     }
 
-   
+    public CartItem updateItemQuantity(Long cartId, Long itemId, int newQuantity) {
+        ShoppingCart cart = shoppingCartRepository.findById(cartId).orElse(null);
+        if (cart == null) {
+            return null;
+        }
+
+        CartItem item = cartItemRepository.findById(itemId).orElse(null);
+        if (item == null || !item.getShoppingCart().getId().equals(cartId)) {
+            return null;
+        }
+
+        item.setQuantity(newQuantity);
+        return cartItemRepository.save(item);
+    }
 
 //    public void removeItemFromCart(Long itemId){
 //        cartItemRepository.deleteById(itemId);;

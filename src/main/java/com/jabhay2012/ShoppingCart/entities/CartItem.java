@@ -25,13 +25,19 @@ public class CartItem {
     @JoinColumn(name = "shopping_cart_id")
     @JsonIgnoreProperties("items")
     private ShoppingCart shoppingCart;
-    
+
+    //this is just like shopping cart , but for this we do not need the user to authorize
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    @JsonIgnoreProperties("items")
+    private Order order;
+
     @Column(name = "quantity", nullable = false)
     private int quantity;
     public CartItem(){
         
     }
-    public CartItem(Product product, ShoppingCart shoppingCart, int quantity) {
+    public CartItem(Product product, ShoppingCart shoppingCart, Order order, int quantity) {
         this.product = product;
         this.shoppingCart = shoppingCart;
         this.quantity = quantity;
@@ -69,6 +75,13 @@ public class CartItem {
         this.quantity = quantity;
     }
 
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
     @Override
     public String toString() {
         return "CartItem [id=" + id + ", product=" + product + ", shoppingCart=" + shoppingCart + ", quantity="

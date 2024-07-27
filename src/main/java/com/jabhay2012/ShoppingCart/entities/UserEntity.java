@@ -32,6 +32,13 @@ public class UserEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
+
+
+
+    @Column(nullable = false)
+    private boolean isGuest;
+
+
     @JsonIgnoreProperties("user")
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -44,12 +51,13 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public UserEntity(long id, String username, String email, String password, List<Role> roles,
+    public UserEntity(long id, String username, String email, String password, Boolean isGuest ,List<Role> roles,
             ShoppingCart shoppingCart) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.isGuest = isGuest;
         this.roles = roles;
         this.shoppingCart = shoppingCart;
 
@@ -101,6 +109,13 @@ public class UserEntity {
 
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
+    }
+    public boolean isGuest() {
+        return isGuest;
+    }
+
+    public void setGuest(boolean guest) {
+        isGuest = guest;
     }
 
     @Override
