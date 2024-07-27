@@ -22,8 +22,8 @@ public class ShoppingCartController {
     private ShoppingCartService shoppingCartService;
     @Autowired
     private UserService userService;
-//    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
-    @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
+//    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/{userId}")
     public ResponseEntity<ShoppingCart> getCartByUserId(@PathVariable Long userId) {
         ShoppingCart shoppingCart = shoppingCartService.findByUserId(userId);
@@ -32,8 +32,8 @@ public class ShoppingCartController {
         }
         return ResponseEntity.ok(shoppingCart);
     }
-    @CrossOrigin(origins = "http://localhost:5173")
-//    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
+    //@CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
     @PostMapping("/{userId}")
     public ResponseEntity<ShoppingCartResponseDto> createCartForUser(@PathVariable Long userId) {
         UserEntity existingUser = userService.findById(userId);
@@ -54,8 +54,8 @@ public class ShoppingCartController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ShoppingCartResponseDto(true, "New cart created", savedCart.getId()));
     }
-    @CrossOrigin(origins = "http://localhost:5173")
-//    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
+    //@CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
     @PostMapping("/{cartId}/items")
     public ResponseEntity<CartItem> addItemToCart(@PathVariable Long cartId, @RequestBody CartItem cartItem) {
         ShoppingCart shoppingCart = shoppingCartService.findByUserId(cartId);
@@ -66,8 +66,8 @@ public class ShoppingCartController {
         return ResponseEntity.ok(addedItem);
     }
 
-    //@CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
-    @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
+   // @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/{cartId}/items")
     public ResponseEntity<List<CartItem>> getItemsInCart(@PathVariable Long cartId) {
         List<CartItem> items = shoppingCartService.getItems(cartId);
@@ -76,15 +76,17 @@ public class ShoppingCartController {
         }
         return ResponseEntity.ok(items);
     }
-    //@CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
-    @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
+   // @CrossOrigin(origins = "http://localhost:5173")
     @DeleteMapping("/{cartId}/items/{itemId}")
     public ResponseEntity<Void> removeItemFromCart(@PathVariable Long cartId, @PathVariable Long itemId) {
         shoppingCartService.removeItemFromCart(cartId, itemId);
         return ResponseEntity.noContent().build();
     }
 
-    @CrossOrigin(origins = "http://localhost:5173")
+    //@CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
+
     @PutMapping("/{cartId}/items/{itemId}")
     public ResponseEntity<CartItem> updateItemQuantity(@PathVariable Long cartId,
                                                        @PathVariable Long itemId,

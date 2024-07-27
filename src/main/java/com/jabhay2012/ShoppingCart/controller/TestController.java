@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
 
-    @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
+
+   // @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/")
     public String sayHello(){
         return "Test, Hello";

@@ -15,7 +15,7 @@ import com.jabhay2012.ShoppingCart.services.CategoryService;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
-    @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
     @GetMapping
     public List<Category> getAllCategories() {
         return categoryService.findAll();
@@ -30,7 +30,7 @@ public class CategoryController {
         }
         return ResponseEntity.ok(category);
     }
-    @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping
     public Category createCategory(@RequestBody Category category) {
@@ -50,7 +50,7 @@ public class CategoryController {
         Category updatedCategory = categoryService.save(category);
         return ResponseEntity.ok(updatedCategory);
     }
-    @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {

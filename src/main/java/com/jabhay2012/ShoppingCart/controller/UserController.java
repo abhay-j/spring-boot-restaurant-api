@@ -17,13 +17,17 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @CrossOrigin(origins = "http://localhost:5173")
+    //@CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
+
     @GetMapping
     public List<UserEntity> getAllUsers() {
         return userService.findAll();
     }
 
-    @CrossOrigin(origins = "http://localhost:5173")
+    //@CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
+
     @GetMapping("/{id}")
     public ResponseEntity<UserEntity> getUserById(@PathVariable Long id) {
         UserEntity user = userService.findById(id);
@@ -33,13 +37,17 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
+
+    //@CrossOrigin(origins = "http://localhost:5173")
     @PostMapping
     public UserEntity createUser(@RequestBody UserEntity user) {
         return userService.save(user);
     }
 
-    @CrossOrigin(origins = "http://localhost:5173")
+    @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
+
+   // @CrossOrigin(origins = "http://localhost:5173")
     @PutMapping("/{id}")
     public ResponseEntity<UserEntity> updateUser(@PathVariable Long id, @RequestBody UserEntity userDetails) {
         UserEntity user = userService.findById(id);
@@ -53,8 +61,10 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
-    @CrossOrigin(origins = "http://localhost:5173")
-    @DeleteMapping("/{id}")
+   // @CrossOrigin(origins = "http://localhost:5173")
+   @CrossOrigin(origins = "https://shopping-cart-client-80fae8a6e96a.herokuapp.com")
+
+   @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         UserEntity user = userService.findById(id);
         if (user == null) {
